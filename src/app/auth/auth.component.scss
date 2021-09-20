@@ -1,0 +1,43 @@
+input.ng-invalid.ng-touched {
+    border: 1px solid red;
+}
+
+.form-container {
+    // STOLEN BACKGROUND OFC
+    background: #0f0c29;
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // justify-content: center;
+    // border: 1px solid red;
+    justify-content: center;
+    height: 100vh;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    // border: 1px solid red;
+    padding: 20px;
+    color: blanchedalmond;
+    box-shadow: 2px 2px 15px 3px rgba(255, 255, 255, 0.2);
+
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+
+    label {
+        padding: 5px;
+    }
+
+    input {
+        padding: 2px 15px;
+        width: 400px;
+    }
+
+    button {
+        margin: 10px 5px;
+    }
+}

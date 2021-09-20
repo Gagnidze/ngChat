@@ -1,0 +1,46 @@
+<div class="container">
+
+    <div class="users-display">
+        <div class="heading">
+            <span class="heading-text">Messages</span>
+        </div>
+        <div class="available-chat" (click)="selectChat(user)" *ngFor="let user of users; let i = index" #info>
+
+            <div class="image"></div>
+            <div class="texts">
+                <span class="username"> {{ user[1].username }} </span>
+                <span *ngIf="userMessages[i]" class="message-preview"> {{ userMessages[i][1][1].text }}
+                </span>
+                <span class="message-preview no-messages" *ngIf="!userMessages[i]">No messages yet</span>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="messenger-display">
+
+        <div *ngIf="!selectedUser" class="no-user-screen">
+            <span class="info-message">Select someone to chat</span>
+        </div>
+
+        <div *ngIf="selectedUser" class="open-chat">
+            <div class="message-box" *ngFor="let msg of messages; let i = index">
+                <span class="from-chat chat-message" *ngIf="messages[i].from === selectedUser">{{msg.text}}</span>
+                <span class="to-chat chat-message" *ngIf="messages[i].from !== selectedUser">{{msg.text}}</span>
+            </div>
+
+
+            <form class="send-message-box" (ngSubmit)="send(msgForm)" #msgForm="ngForm">
+
+                <input autocomplete="off" class="send-message-input" id="text" type="text" ngModel name="text">
+
+                <button class="send-btn" type="submit">
+                    <i class="fab fa-telegram-plane send-icon"></i>
+                </button>
+
+            </form>
+        </div>
+
+    </div>
+</div>

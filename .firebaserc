@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "test-96155": {
+      "hosting": {
+        "ngChat": [
+          "test-96155"
+        ]
+      }
+    }
+  }
+}
