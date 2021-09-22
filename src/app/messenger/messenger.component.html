@@ -1,5 +1,7 @@
 <div class="container">
 
+    <button (click)="logOut()">Log Out</button>
+
     <div class="users-display">
         <div class="heading">
             <span class="heading-text">Messages</span>
@@ -9,10 +11,22 @@
             <div class="image"></div>
             <div class="texts">
                 <span class="username"> {{ user[1].username }} </span>
-                <span *ngIf="userMessages[i]" class="message-preview"> {{ userMessages[i][1][1].text }}
+                <!-- <span *ngIf="userMessages[i]" class="message-preview"> {{ userMessages[i][1][1].text }}
+                </span> -->
+                <!-- <span>{{user[0]}}</span> -->
+                <!-- <span>{{ guja[user[0]][1].text }}</span> -->
+
+                <span *ngIf="guja[user[0]]" class="message-preview"> {{ guja[user[0]][1].text }}
+                </span>
+                <span class="message-preview no-messages" *ngIf="!guja[user[0]]">No messages yet</span>
+            </div>
+            <!-- <div class="image"></div>
+            <div class="texts">
+                <span class="username"> {{ user[1].username }} </span>
+                <span *ngIf="user[i][1][messages]" class="message-preview"> {{ userMessages[i][1][1].text }}
                 </span>
                 <span class="message-preview no-messages" *ngIf="!userMessages[i]">No messages yet</span>
-            </div>
+            </div> -->
         </div>
 
     </div>

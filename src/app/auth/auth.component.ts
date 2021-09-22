@@ -1,4 +1,4 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, getIdToken, onAuthStateChanged } from "firebase/auth";
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -25,36 +25,6 @@ export class AuthComponent implements OnInit {
 
   ngOnInit(): void {
 
-
-    // look at this shit later, need auto login and maybe auto logout
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-
-        console.log(user)
-
-        this.store.dispatch(AuthSuccess({
-          payload: {
-            email: user.email,
-            uid: user.uid,
-            username: 'need something',
-            tokenExpDate: new Date(),
-            token: '',
-            messages: []
-          }
-        }))
-        // ...
-      } else {
-
-        // User is signed out
-        // ...
-
-        console.log('WE ARE IN THE ELSE BLOCK')
-      }
-    });
   }
 
   signupSubmit(form: NgForm) {
@@ -89,7 +59,7 @@ export class AuthComponent implements OnInit {
         password: form.value.password
       }
     }))
-    this.router.navigate(['messenger'])
+    // this.router.navigate(['messenger'])
   }
 
 }

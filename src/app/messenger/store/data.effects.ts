@@ -25,6 +25,9 @@ export class DataEffects {
                 switchMap(
                     (sendMessageAct) => {
 
+                        // ADD QUERY EXISTENCE CHECKING HERE 
+                        console.log('SEND MSG EFFECTS')
+
                         set(push(ref(db, '/users/' + sendMessageAct.message.from + '/messages/' + sendMessageAct.message.to)), sendMessageAct.message)
                         return set(push(ref(db, '/users/' + sendMessageAct.message.to + '/messages/' + sendMessageAct.message.from)), sendMessageAct.message)
 

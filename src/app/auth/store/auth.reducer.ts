@@ -32,14 +32,14 @@ export const authReducer = createReducer(
     }),
 
     on(AuthActions.AuthSuccess, (state, action) => {
+        console.log('infinite reducer AuthSuccess')
         console.log(action.payload.messages)
         return {
             ...state,
             email: action.payload.email,
             uid: action.payload.uid,
             token: action.payload.token,
-            tokenExpDate: action.payload.tokenExpDate,
-            // messages: action.payload.messages
+            tokenExpDate: action.payload.tokenExpDate
         }
     })
 )

@@ -33,7 +33,9 @@ export const dataReducer = createReducer(
         console.log('logging from reducer')
         console.log(action.message)
 
-        return state
+        return {
+            ...state
+        }
     }),
 
     on(dataActions.selectUser, (state, action) => {
@@ -45,7 +47,7 @@ export const dataReducer = createReducer(
     }),
 
     on(dataActions.StoreMessages, (state, action) => {
-        console.log('THIS IS THE MESSAGES WE GET IN REDUCER')
+        console.log('STOREMESSAGES REDUCER')
         console.log(action.payload.messages)
         return {
             ...state,

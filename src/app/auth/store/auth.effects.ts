@@ -4,12 +4,13 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } f
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as authActions from './auth.actions';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { initializeApp } from '@firebase/app';
 import { environment } from 'src/environments/environment';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
-import { child, get, getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, set } from 'firebase/database';
+import { Router } from '@angular/router';
 
 const app = initializeApp(environment.firebase);
 const Auth = getAuth();
@@ -33,7 +34,7 @@ export class AuthEffects {
                                 email: res.user.email,
                                 username: signupAct.payload.username,
                                 uid: res.user.uid,
-                                messages: []
+                                messages: ['']
                             });
 
                             return authActions.AuthSuccess({
@@ -81,8 +82,20 @@ export class AuthEffects {
             )
     )
 
+    authSuccessFul = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(authActions.AuthSuccess),
+                tap(() => {
+                    console.log('infinite loop')
+                    this.router.navigate(['messenger'])
+                })
+            ), { dispatch: false }
+    )
+
     constructor(
         private actions$: Actions,
-        private store: Store<AppState>
+        private store: Store<AppState>,
+        private router: Router
     ) { }
 }
