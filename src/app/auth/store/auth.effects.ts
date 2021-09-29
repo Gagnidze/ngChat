@@ -11,9 +11,12 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
 import { getDatabase, ref, set } from 'firebase/database';
 import { Router } from '@angular/router';
+import * as fbStorageImport from 'firebase/storage'
 
 const app = initializeApp(environment.firebase);
 const Auth = getAuth();
+
+const storage = fbStorageImport.getStorage();
 
 const db = getDatabase();
 const dbRef = ref(db);
@@ -21,39 +24,60 @@ const dbRef = ref(db);
 @Injectable()
 
 export class AuthEffects {
-
+    
     authSignup = createEffect(
         () =>
-            this.actions$.pipe(
-                ofType(authActions.SignupStart),
-                switchMap((signupAct) => {
-                    return createUserWithEmailAndPassword(Auth, signupAct.payload.email, signupAct.payload.password).then(
-                        (res) => {
-
-                            set(ref(db, 'users/' + res.user.uid), {
-                                email: res.user.email,
-                                username: signupAct.payload.username,
-                                uid: res.user.uid,
-                                messages: ['']
-                            });
-
-                            return authActions.AuthSuccess({
-                                payload: {
-                                    email: res.user.email,
-                                    uid: res.user.uid,
-                                    username: signupAct.payload.username,
-                                    token: 'res.user.getIdToken()',
-                                    tokenExpDate: new Date(),
-                                    messages: []
+        this.actions$.pipe(
+            ofType(authActions.SignupStart),
+            switchMap((signupAct) => {
+                return createUserWithEmailAndPassword(Auth, signupAct.payload.email, signupAct.payload.password).then(
+                    (res) => {
+                        
+                        console.log(res);
+                        console.log(signupAct.payload)
+                        console.log(signupAct.payload.username)
+                        
+                        const storageRef = fbStorageImport.ref(storage, signupAct.payload.username);
+                        
+                        fbStorageImport.uploadBytes(storageRef, signupAct.payload.photo)
+                        .then((fbUploadRes)=> {
+                            fbStorageImport.getDownloadURL(storageRef).then(
+                                (imageURLRes) => {
+                                    
+                                    console.log(imageURLRes);
+                                    
+                                    set(ref(db, 'users/' + res.user.uid), {
+                                        email: res.user.email,
+                                        username: signupAct.payload.username,
+                                        uid: res.user.uid,
+                                        messages: [''],
+                                        imageURL: imageURLRes
+                                    });
                                 }
-                            })
-                        }
+                            )
+                            console.log(res);
+                        });
+
+                        
+                        
+                        
+                        return authActions.AuthSuccess({
+                            payload: {
+                                email: res.user.email,
+                                uid: res.user.uid,
+                                username: signupAct.payload.username,
+                                token: 'res.user.getIdToken()',
+                                tokenExpDate: new Date(),
+                                messages: []
+                            }
+                        })
+                    }
                     )
                 })
-            )
-    )
-
-    authLogin = createEffect(
+                )
+                )
+                
+                authLogin = createEffect(
         () =>
             this.actions$.pipe(
                 ofType(authActions.Login),

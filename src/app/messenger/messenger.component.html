@@ -6,33 +6,34 @@
         <div class="heading">
             <span class="heading-text">Messages</span>
         </div>
-        <div class="available-chat" (click)="selectChat(user)" *ngFor="let user of users; let i = index" #info>
+        <div 
+        class="available-chat" 
+        (click)="selectChat(user)" 
+        *ngFor="let user of users; let i = index"
+        #info
+        >
+        
+        <div [ngClass]="{'active-chat' : user[1].uid === selectedUser}" class="available-chat">
 
-            <div class="image"></div>
-            <div class="texts">
-                <span class="username"> {{ user[1].username }} </span>
-                <!-- <span *ngIf="userMessages[i]" class="message-preview"> {{ userMessages[i][1][1].text }}
-                </span> -->
-                <!-- <span>{{user[0]}}</span> -->
-                <!-- <span>{{ guja[user[0]][1].text }}</span> -->
+            
+            <div *ngIf="!user[1].imageURL" class="image"></div>
+            
+                <img *ngIf="user[1].imageURL" class="user-thumbnail" src="{{user[1].imageURL}}" alt="">
 
-                <span *ngIf="guja[user[0]]" class="message-preview"> {{ guja[user[0]][1].text }}
-                </span>
-                <span class="message-preview no-messages" *ngIf="!guja[user[0]]">No messages yet</span>
+                <div class="texts">
+                    <span class="username"> {{ user[1].username }} </span>
+                    
+                    <span *ngIf="guja[user[0]]" class="message-preview"> {{ guja[user[0]][1].text }}
+                    </span>
+                    <span class="message-preview no-messages" *ngIf="!guja[user[0]]">No messages yet</span>
+                </div>
             </div>
-            <!-- <div class="image"></div>
-            <div class="texts">
-                <span class="username"> {{ user[1].username }} </span>
-                <span *ngIf="user[i][1][messages]" class="message-preview"> {{ userMessages[i][1][1].text }}
-                </span>
-                <span class="message-preview no-messages" *ngIf="!userMessages[i]">No messages yet</span>
-            </div> -->
         </div>
 
     </div>
 
 
-    <div class="messenger-display">
+    <div #chatBox class="messenger-display">
 
         <div *ngIf="!selectedUser" class="no-user-screen">
             <span class="info-message">Select someone to chat</span>

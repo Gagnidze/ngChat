@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -6,8 +6,11 @@ import { getAuth, signOut } from 'firebase/auth';
 import { getDatabase, onValue, ref } from 'firebase/database';
 import { Subscription } from 'rxjs';
 import { Message } from '../shared/message.model';
+import { UtilitiesService } from '../shared/utilities.service';
 import { AppState } from '../store/app.reducer';
 import { selectUser, SendMsg, StoreAllMessages, StoreMessages } from './store/data.actions';
+
+import * as fbStorageImport from 'firebase/storage'
 
 @Component({
   selector: 'app-messenger',
@@ -18,22 +21,31 @@ export class MessengerComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private router: Router
+    private router: Router,
+    private utService: UtilitiesService
   ) { }
 
   db = getDatabase();
   dbRef = ref(this.db);
-  users;
+  users = [];
 
   auth = getAuth();
 
-  guja;
+  // This is same as userMessages but as an Object 
+  guja: object;
 
-  messages;
+  // get messages for open chat from STORE
+  messages: Message[];
 
-  msg;
-
+  // Only using for storeAllMessages action
   allMsg;
+
+
+  storage = fbStorageImport.getStorage();
+  storageRef = fbStorageImport.ref
+
+  userImages;
+
 
   selectedUser: string;
 
@@ -43,28 +55,40 @@ export class MessengerComponent implements OnInit, OnDestroy {
 
   userMessages = [];
 
+  @ViewChild('chatBox') chatDiv: ElementRef;
 
-  ngOnInit(): void {
+  ngOnInit() {
+
     // Getting the user who logged in from STORE and storing it here (for template and future use)
     this.store.select('auth').subscribe(
       (res) => {
-        console.log('getting active user UID oninit from store')
         this.activeUser = res.uid;
       }
     )
 
     // Getting the list of users from DATABASE to make chat options
     onValue(this.dbRef, (snapshot: any) => {
+      this.allMsg = snapshot.val().users[this.activeUser].messages
+
+      // We get messages here when messaged
+
+      this.store.dispatch(StoreAllMessages({ payload: { allMessages: this.allMsg } }))
+
+      this.getData();
 
       this.users = snapshot.val().users;
 
       // This property stores only the messages for active user
 
+      // /////////////////////////////////////////////
+      
       this.userMessages = Object.entries(this.users[this.activeUser].messages);
-
+      
       delete this.users[this.activeUser]
-
+      
       this.users = Object.entries(this.users)
+      
+      // /////////////////////////////////////////////
 
       // Getting last messages for message previews
 
@@ -76,10 +100,7 @@ export class MessengerComponent implements OnInit, OnDestroy {
 
       })
 
-      this.guja = Object.fromEntries(this.userMessages)
-      console.log(this.guja)
-
-      console.log(this.userMessages);
+      this.guja = Object.fromEntries(this.userMessages);
 
     })
 
@@ -93,22 +114,6 @@ export class MessengerComponent implements OnInit, OnDestroy {
         }
       }
     )
-
-    /////////////////////////////////////////////////
-
-    onValue(this.dbRef, (snapshot: any) => {
-
-      // this gets all the available messages for this user
-
-      // Updates with every single new message
-
-      this.allMsg = snapshot.val().users[this.activeUser].messages
-
-      // We get messages here when messaged
-
-      this.store.dispatch(StoreAllMessages({ payload: { allMessages: this.allMsg } }))
-      this.getData();
-    })
   }
 
   getData() {
@@ -128,16 +133,19 @@ export class MessengerComponent implements OnInit, OnDestroy {
   }
 
   selectChat(info) {
+    
+    
+  this.store.dispatch(selectUser({ payload: { selectedUser: info[0] } }))
+  this.getData();
+  
+  this.store.select('data').subscribe(
+    (dataRes) => {
+      this.selectedUser = dataRes.selectedUser
+    }
+  )
 
-    this.store.dispatch(selectUser({ payload: { selectedUser: info[0] } }))
-    this.getData();
-
-    this.store.select('data').subscribe(
-      (dataRes) => {
-        this.selectedUser = dataRes.selectedUser
-      }
-    )
-  }
+  this.utService.scroll(this.chatDiv)
+}
 
 
   send(form: NgForm) {

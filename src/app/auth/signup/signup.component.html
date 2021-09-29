@@ -1,0 +1,84 @@
+<div class="form-container">
+
+
+
+    <!-- <form class="form" (ngSubmit)="signupSubmit(signupForm)" #signupForm="ngForm">
+        <label for="email">Enter your Email</label>
+        <input id="email" type="email" ngModel name="email" required email>
+
+        <label for="userName">Enter your Username</label>
+        <input id="userName" type="text" ngModel name="username" required>
+
+        <label for="password">Enter your password</label>
+        <input id="password" type="password" ngModel name="password" minlength="6" required>
+
+        <label for="rePassword">Repeat your password</label>
+        <input id="rePassword" type="password" ngModel name="rePassword" required>
+
+        <span *ngIf="signupForm.invalid && signupForm.touched">Please enter valid values</span>
+        <span *ngIf="hackyWayOfValidation">Passwords don't match</span>
+
+        <button [disabled]="signupForm.invalid" type="submit">Submit</button>
+    </form> -->
+
+    <form class="form" (ngSubmit)="signupSubmit()" [formGroup]="signupForm">
+        <label for="email">Enter your Email</label>
+        <input 
+            placeholder="Ex: example@somemail.com" 
+            type="email" 
+            name="email" 
+            id="email" 
+            formControlName="email"
+        >
+
+        <label for="userName">Enter your Username</label>
+        <input 
+            placeholder="Ex: AngularMan"
+            id="userName" 
+            type="text" 
+            formControlName="username" 
+            name="userName"
+        >
+
+        <label for="password">Enter your password</label>
+        <input 
+            id="password" 
+            formControlName="password" 
+            type="password" 
+            name="password" 
+        >
+
+        <label for="rePassword">Repeat your password</label>
+        <input 
+            id="rePassword" 
+            type="password" 
+            name="rePassword" 
+            formControlName="rePassword"
+        >
+
+        <div class="flex-wrapper">
+            <div class="img-cont">
+                <label for="">Your profile photo</label>
+                <input 
+                type="file"
+                id="photo"
+                name="photo"
+                formControlName="photo"
+                (change)="inputChange($event)"
+                accept="*.png.jpg.jpeg"
+                >
+            </div>
+            <img class="image-preview" *ngIf="img"  src="{{img}}" alt="Not showing">
+        </div>
+        
+
+        <span class="error-msg" *ngIf="signupForm.invalid && signupForm.touched">Please enter valid values</span>
+        <!-- <span>Passwords don't match</span> -->
+
+        <button [disabled]="signupForm.invalid">Submit</button>
+    </form>
+    
+
+
+    <span [routerLink]="['/auth/login']">Allready have an account?</span>
+</div>

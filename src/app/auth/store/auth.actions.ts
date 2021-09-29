@@ -7,6 +7,7 @@ export const SIGNUP_START = '[AUTH] Sign Up Start';
 export const SIGNUP_SUCCESS = '[AUTH] Sign Up Success';
 
 export const LOGIN = '[AUTH] Log In';
+// export const SAVE_PHOTO = '[AUTH] Save Photo';
 
 // export const NAVIGATE = '[AUTH] Navigate'
 
@@ -23,7 +24,8 @@ export const SignupStart = createAction(
         payload: {
             email: string,
             password: string,
-            username: string
+            username: string,
+            photo?: Blob
         }
     }>()
 )
@@ -51,6 +53,16 @@ export const Login = createAction(
         }
     }>()
 )
+
+// export const SavePhoto = createAction(
+//     SAVE_PHOTO,
+//     props<{
+//         payload: {
+//             email: string,
+//             photo: File
+//         }
+//     }>()
+// )
 
 // export const Navigate = createAction(
 //     NAVIGATE,

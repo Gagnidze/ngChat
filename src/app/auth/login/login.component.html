@@ -1,0 +1,18 @@
+<div class="form-container">
+    <form class="form" (ngSubmit)="loginSubmit(loginForm)" #loginForm="ngForm">
+
+        <label for="email">Enter your Email</label>
+        <input id="email" type="email" ngModel name="email" required email>
+
+        <label for="password">Enter your password</label>
+        <input id="password" type="password" ngModel name="password" minlength="6" required>
+
+        <button [disabled]="loginForm.invalid" type="submit">Submit</button>
+
+    </form>
+
+    <span [routerLink]="['/auth/signup']">Don't have an account?</span>
+
+
+
+</div>

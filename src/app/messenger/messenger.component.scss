@@ -7,6 +7,7 @@
     .users-display {
         display: flex;
         flex-direction: column;
+        overflow-y: auto;
 
         .heading {
             padding: 10px 20px;
@@ -17,7 +18,7 @@
             }
         }
     }
-
+    
     .messenger-display {
         display: flex;
         flex-direction: column;
@@ -73,11 +74,20 @@
         
             
         }
+
+        .open-chat {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+
+        }
         
         .send-message-box {
             display: flex;
             flex-direction: row;
             background-color: #f5f1f0;
+            // align-self: flex-end;
+            // width: 100%;
 
             .send-message-input {
                 width: 100%;
@@ -95,6 +105,7 @@
                     font-size: 20px;
                     align-self: center;
                     padding-right: 8px;
+                    cursor: pointer;
                 }
             }
 
@@ -110,12 +121,23 @@
         display: flex;
         flex-direction: row;
         padding: 0 5px;
+        width: 100%;
+        cursor: pointer;
 
         .image {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             background-color: black;
+            align-self: center;
+            margin: 5px;
+        }
+        
+        .user-thumbnail {
+            width: 45px;
+            height: 45px;
+            border-radius: 50px;
+            object-fit: cover;
             align-self: center;
             margin: 5px;
         }
@@ -142,8 +164,9 @@
 
         .active-chat {
             background-color: #f5fcfe;
+            // background-color: #18758f;
+            border-radius: 2px;
         }
-        
     }
 }
 
