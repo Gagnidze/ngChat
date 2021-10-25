@@ -49,6 +49,7 @@ export class AuthEffects {
                                     set(ref(db, 'users/' + res.user.uid), {
                                         email: res.user.email,
                                         username: signupAct.payload.username,
+                                        lastDate: new Date(2010, 12, 31),
                                         uid: res.user.uid,
                                         messages: [''],
                                         imageURL: imageURLRes
