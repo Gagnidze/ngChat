@@ -23,9 +23,9 @@
                 <div class="texts">
                     <span class="username"> {{ user[1].username }} </span>
                     
-                    <span *ngIf="guja[user[0]]" class="message-preview"> {{ guja[user[0]][1].text }}
+                    <span *ngIf="messageObjects[user[0]]" class="message-preview"> {{ messageObjects[user[0]][1].text }}
                     </span>
-                    <span class="message-preview no-messages" *ngIf="!guja[user[0]]">No messages yet</span>
+                    <span class="message-preview no-messages" *ngIf="!messageObjects[user[0]]">No messages yet</span>
                 </div>
             </div>
         </div>

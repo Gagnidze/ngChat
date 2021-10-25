@@ -11,6 +11,7 @@ import { AppState } from '../store/app.reducer';
 import { selectUser, SendMsg, StoreAllMessages, StoreMessages } from './store/data.actions';
 
 import * as fbStorageImport from 'firebase/storage'
+import { userObject } from '../shared/interfaces.interface';
 
 @Component({
   selector: 'app-messenger',
@@ -32,7 +33,7 @@ export class MessengerComponent implements OnInit, OnDestroy {
   auth = getAuth();
 
   // This is same as userMessages but as an Object 
-  guja: object;
+  messageObjects: object;
 
   // get messages for open chat from STORE
   messages: Message[];
@@ -88,6 +89,18 @@ export class MessengerComponent implements OnInit, OnDestroy {
       
       this.users = Object.entries(this.users)
       
+      // SORT MESSAGES BY LATEST MESSAGE
+
+      this.users.sort(
+        function(a,b) {
+          console.log(a[1].lastDate)
+          return +new Date(b[1].lastDate) - +new Date(a[1].lastDate);
+        }
+      )
+      console.log(this.users);
+
+      // SORT MESSAGES BY LATEST MESSAGE
+      
       // /////////////////////////////////////////////
 
       // Getting last messages for message previews
@@ -100,7 +113,7 @@ export class MessengerComponent implements OnInit, OnDestroy {
 
       })
 
-      this.guja = Object.fromEntries(this.userMessages);
+      this.messageObjects = Object.fromEntries(this.userMessages);
 
     })
 

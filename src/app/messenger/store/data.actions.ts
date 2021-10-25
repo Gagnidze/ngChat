@@ -14,10 +14,7 @@ export const STORE_MESSAGES = '[DATA] Store Messages';
 export const STORE_ALL_MESSAGES = '[DATA] Store All Messages'
 
 export const GetUsers = createAction(
-    GET_USERS,
-    // props<{
-    //     payload: {}
-    // }>()
+    GET_USERS
 )
 
 export const SetUsers = createAction(
